@@ -16,7 +16,7 @@
     "api"
   ],
   "author": "Anthony Vilarim Caliani",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/avcaliani/nodejs/issues"
   },
