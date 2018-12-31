@@ -9,8 +9,8 @@ const Mongoose = require('mongoose');
 
 const Product = Mongoose.Schema({
   _id: Mongoose.Schema.Types.ObjectId,
-  name: String,
-  price: Number
+  name: { type: String, required: true, unique: true },
+  price: { type: Number, required: true }
 });
 
 module.exports = Mongoose.model('Product', Product);
