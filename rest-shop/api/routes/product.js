@@ -41,6 +41,9 @@ Router.post('/', (request, response, next) => {
 
 Router.patch('/:id', (request, response, next) => {
 
+  if (!Array.isArray(request.body))
+    return Response.error(response, 'Invalid product body', 500);
+
   const data = {};
   for (const prop of request.body)
     data[prop.name] = prop.value;
