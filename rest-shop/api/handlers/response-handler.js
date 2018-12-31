@@ -1,6 +1,6 @@
 /**
- * @author      Anthony Vilarim Caliani
- * @contact     https://github.com/avcaliani
+ * @author    Anthony Vilarim Caliani
+ * @contact   https://github.com/avcaliani
  * 
  * @Description
  * Response Handler, which is going to prevent CORS errors.

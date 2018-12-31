@@ -1,6 +1,6 @@
 /**
- * @author      Anthony Vilarim Caliani
- * @contact     https://github.com/avcaliani
+ * @author    Anthony Vilarim Caliani
+ * @contact   https://github.com/avcaliani
  * 
  * @Description
  * App JS File.
@@ -21,7 +21,9 @@ const App = Express();
 
 // Registering Handlers (Before Request)
 App.use(Morgan('dev'));
-App.use(BodyParser.urlencoded({ extended: false }));
+App.use(BodyParser.urlencoded({
+  extended: false
+}));
 App.use(BodyParser.json());
 App.use(ResponseHandler);
 
