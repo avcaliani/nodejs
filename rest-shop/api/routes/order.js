@@ -22,9 +22,12 @@ Router.get('/:id', (request, response, next) => {
 })
 
 Router.post('/', (request, response, next) => {
-    response.status(200).json({
-        message: 'Order:post() Works!'
-    });
+    const order = {
+        id: Math.floor((Math.random() * 1000)) + 1,
+        productId: request.body.productId,
+        quantity: request.body.quantity
+    };
+    response.status(200).json(order);
 });
 
 Router.delete('/:id', (request, response, next) => {

@@ -7,6 +7,7 @@
  */
 const Express = require('express');
 const Morgan = require('morgan'); // Log Handler
+const BodyParser = require('body-parser');
 
 // Handlers
 const ErrorHandler = require('./api/handlers/error-handler');
@@ -19,6 +20,8 @@ const App = Express();
 
 // Registering Log Handler
 App.use(Morgan('dev'));
+App.use(BodyParser.urlencoded({ extended: false }));
+App.use(BodyParser.json());
 
 // Registering Controllers
 App.use('/products', Product);
