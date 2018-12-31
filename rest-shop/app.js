@@ -8,14 +8,20 @@
 const Express = require('express');
 const Morgan = require('morgan'); // Log Handler
 const BodyParser = require('body-parser');
+const Mongoose = require('mongoose');
 
 // Handlers
 const ErrorHandler = require('./api/handlers/error-handler');
-const ResponseHandler = require('./api/handlers/response-handler');
+const HttpHandler = require('./api/handlers/http-handler');
 
 // Controllers
 const Product = require('./api/routes/product');
 const Order = require('./api/routes/order');
+
+// Database
+Mongoose.connect(process.env.MONGO_ATLAS_URL, {
+  useNewUrlParser: true
+});
 
 const App = Express();
 
@@ -25,7 +31,7 @@ App.use(BodyParser.urlencoded({
   extended: false
 }));
 App.use(BodyParser.json());
-App.use(ResponseHandler);
+App.use(HttpHandler);
 
 // Registering Controllers
 App.use('/products', Product);
