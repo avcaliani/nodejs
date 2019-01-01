@@ -15,6 +15,7 @@ const Product = require('../models/product');
 Router.get('/', (request, response, next) => {
   Order.find()
     .select('_id product quantity') // Find only these fields
+    .populate('product', '_id name price')
     .exec()
     .then(documents => {
       const path = `http://${request.headers.host}/orders/`;
@@ -31,6 +32,7 @@ Router.get('/', (request, response, next) => {
 
 Router.get('/:id', (request, response, next) => {
   Order.findById(request.params.id)
+    .populate('product', '_id name price')
     .exec()
     .then(result => Response.ok(response, parse(result)))
     .catch(err => Response.error(response, err, 500));
@@ -81,8 +83,12 @@ function parse(order, request = null) {
   
     const ret = {
       id: order._id,
-      product: order.product,
-      price: order.quantity
+      quantity: order.quantity,
+      product: {
+        id: order.product._id,
+        name: order.product.name,
+        price: order.product.price
+      }
     };
 
     if (request !== null)
