@@ -74,7 +74,7 @@ Router.delete('/:id', (request, response, next) => {
     .then(result => {
       if (result.n > 0)
         return Response.ok(response, true);
-      Response.error(response, 'Order not found', 404);
+      Response.error(response, 'Product not found', 404);
     })
     .catch(err => Response.error(response, err));
 });
