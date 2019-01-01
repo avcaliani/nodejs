@@ -11,8 +11,8 @@ const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 
 // Handlers
-const ErrorHandler = require('./api/handlers/error-handler');
-const HttpHandler = require('./api/handlers/http-handler');
+const ErrorHandler = require('./api/middlewares/error-handler');
+const HttpHandler = require('./api/middlewares/http-handler');
 
 // Controllers
 const Product = require('./api/routes/product');
