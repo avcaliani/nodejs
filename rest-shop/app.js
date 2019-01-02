@@ -15,8 +15,9 @@ const ErrorHandler = require('./api/middlewares/error-handler');
 const HttpHandler = require('./api/middlewares/http-handler');
 
 // Controllers
-const Product = require('./api/routes/product');
-const Order = require('./api/routes/order');
+const ProductRoutes = require('./api/routes/product');
+const OrderRoutes = require('./api/routes/order');
+const UserRoutes = require('./api/routes/user');
 
 // Database
 Mongoose.connect(process.env.MONGO_URL, {
@@ -41,8 +42,9 @@ App.use(BodyParser.json());
 App.use(HttpHandler);
 
 // Registering Routes
-App.use('/products', Product);
-App.use('/orders', Order);
+App.use('/products', ProductRoutes);
+App.use('/orders', OrderRoutes);
+App.use('/users', UserRoutes);
 
 // Error Handler
 App.use(ErrorHandler);
