@@ -87,7 +87,6 @@ Router.delete('/:id', (request, response, next) => {
 /**
  * Clean up a product object, which was returned from database.
  * Request Object is optional and would have 'type' and 'url' fields.
- * 
  * @param {*} product Product Object.
  * @param {*} request Request Object (Optional)
  */

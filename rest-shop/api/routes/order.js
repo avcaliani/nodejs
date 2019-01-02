@@ -73,7 +73,6 @@ Router.delete('/:id', (request, response, next) => {
 /**
  * Clean up a order object, which was returned from database.
  * Request Object is optional and would have 'type' and 'url' fields.
- * 
  * @param {*} order Oder Object.
  * @param {*} request Request Object (Optional)
  */
