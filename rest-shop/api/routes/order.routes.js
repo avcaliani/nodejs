@@ -10,8 +10,8 @@ const Router = Express.Router();
 const Mongoose = require('mongoose');
 const Response = require('../response');
 
-const Order = require('../models/order');
-const Product = require('../models/product');
+const Order = require('../models/order.model');
+const Product = require('../models/product.model');
 
 Router.get('/', (request, response, next) => {
   Order.find()

@@ -11,13 +11,13 @@ const BodyParser = require('body-parser');
 const Mongoose = require('mongoose');
 
 // Handlers
-const ErrorHandler = require('./api/middlewares/error-handler');
-const HttpHandler = require('./api/middlewares/http-handler');
+const ErrorHandler = require('./api/middlewares/error.handler');
+const HttpHandler = require('./api/middlewares/http.handler');
 
 // Controllers
-const ProductRoutes = require('./api/routes/product');
-const OrderRoutes = require('./api/routes/order');
-const UserRoutes = require('./api/routes/user');
+const OrderRoutes = require('./api/routes/order.routes');
+const ProductRoutes = require('./api/routes/product.routes');
+const UserRoutes = require('./api/routes/user.routes');
 
 // Database
 Mongoose.connect(process.env.MONGO_URL, {
@@ -42,8 +42,8 @@ App.use(BodyParser.json());
 App.use(HttpHandler);
 
 // Registering Routes
-App.use('/products', ProductRoutes);
 App.use('/orders', OrderRoutes);
+App.use('/products', ProductRoutes);
 App.use('/users', UserRoutes);
 
 // Error Handler

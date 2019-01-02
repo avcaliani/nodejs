@@ -8,10 +8,10 @@
 const Express = require('express');
 const Router = Express.Router();
 const Mongoose = require('mongoose');
-const File = require('../middlewares/file-upload-handler');
+const File = require('../middlewares/file-upload.handler');
 const Response = require('../response');
 
-const Product = require('../models/product');
+const Product = require('../models/product.model');
 
 Router.get('/', (request, response, next) => {
   Product.find()

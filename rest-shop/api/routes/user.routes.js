@@ -11,7 +11,7 @@ const Mongoose = require('mongoose');
 const BCrypt = require('bcrypt');
 const Response = require('../response');
 
-const User = require('../models/user');
+const User = require('../models/user.model');
 
 Router.post('/sign-up', (request, response, next) => {
   BCrypt.hash(request.body.password, 10, (err, hash) => {
