@@ -3,7 +3,7 @@
  * @contact   https://github.com/avcaliani
  * 
  * @Description
- * Product Model.
+ * Order Model.
  */
 const Mongoose = require('mongoose');
 
