@@ -7,13 +7,15 @@
  */
 const Express = require('express');
 const Router = Express.Router();
-const Response = require('../response');
 const Mongoose = require('mongoose');
+const File = require('../middlewares/file-upload-handler');
+const Response = require('../response');
+
 const Product = require('../models/product');
 
 Router.get('/', (request, response, next) => {
   Product.find()
-    .select('_id name price') // Find only these fields
+    .select('_id name price image') // Find only these fields
     .exec()
     .then(documents => {
       const path = `http://${request.headers.host}/products/`;
@@ -35,18 +37,21 @@ Router.get('/:id', (request, response, next) => {
     .catch(err => Response.error(response, err, 500));
 })
 
-Router.post('/', (request, response, next) => {
+Router.post('/', File.upload.single('image'), (request, response, next) => {
+  
+  if (typeof request.file === 'undefined')
+    return Response.error(response, 'Invalid file')
 
   const product = new Product({
     _id: new Mongoose.Types.ObjectId(),
     name: request.body.name,
-    price: request.body.price
+    price: request.body.price,
+    image: request.file.path
   });
 
   product.save()
     .then(result => Response.ok(response, parse(result), 201))
     .catch(err => Response.error(response, err));
-
 });
 
 Router.patch('/:id', (request, response, next) => {
@@ -63,7 +68,7 @@ Router.patch('/:id', (request, response, next) => {
     .then(result => {
       if (result.n > 0)
         return Response.ok(response, true);
-      Response.error(response, 'Order not found', 404);
+      Response.error(response, 'Product not found', 404);
     })
     .catch(err => Response.error(response, err));
 });
@@ -87,20 +92,21 @@ Router.delete('/:id', (request, response, next) => {
  * @param {*} request Request Object (Optional)
  */
 function parse(product, request = null) {
-  
+
   if (product === null || typeof product === 'undefined')
     return null;
-  
-    const prod = {
-      id: product._id,
-      name: product.name,
-      price: product.price
-    };
 
-    if (request !== null)
-      prod.request = request;
+  const prod = {
+    id: product._id,
+    name: product.name,
+    price: product.price,
+    price: product.image
+  };
 
-      return prod;
+  if (request !== null)
+    prod.request = request;
+
+  return prod;
 }
 
 module.exports = Router;

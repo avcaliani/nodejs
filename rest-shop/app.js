@@ -19,25 +19,32 @@ const Product = require('./api/routes/product');
 const Order = require('./api/routes/order');
 
 // Database
-Mongoose.connect(process.env.MONGO_ATLAS_URL, {
+Mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true
 });
 
 const App = Express();
 
-// Registering Handlers (Before Request)
+// Log Handler
 App.use(Morgan('dev'));
+
+// Static Content
+App.use('/uploads', Express.static(process.env.FILE_UPLOAD_FOLDER));
+
+// Body Parser Handler
 App.use(BodyParser.urlencoded({
   extended: false
 }));
 App.use(BodyParser.json());
+
+// HTTP Handler
 App.use(HttpHandler);
 
-// Registering Controllers
+// Registering Routes
 App.use('/products', Product);
 App.use('/orders', Order);
 
-// Registering Handlers (After Request)
+// Error Handler
 App.use(ErrorHandler);
 
 module.exports = App;

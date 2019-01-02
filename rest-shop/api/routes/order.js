@@ -7,15 +7,16 @@
  */
 const Express = require('express');
 const Router = Express.Router();
-const Response = require('../response');
 const Mongoose = require('mongoose');
+const Response = require('../response');
+
 const Order = require('../models/order');
 const Product = require('../models/product');
 
 Router.get('/', (request, response, next) => {
   Order.find()
     .select('_id product quantity') // Find only these fields
-    .populate('product', '_id name price')
+    .populate('product', '_id name price image')
     .exec()
     .then(documents => {
       const path = `http://${request.headers.host}/orders/`;
@@ -77,24 +78,25 @@ Router.delete('/:id', (request, response, next) => {
  * @param {*} request Request Object (Optional)
  */
 function parse(order, request = null) {
-  
+
   if (order === null || typeof order === 'undefined')
     return null;
-  
-    const ret = {
-      id: order._id,
-      quantity: order.quantity,
-      product: {
-        id: order.product._id,
-        name: order.product.name,
-        price: order.product.price
-      }
-    };
 
-    if (request !== null)
-      ret.request = request;
+  const ret = {
+    id: order._id,
+    quantity: order.quantity,
+    product: {
+      id: order.product._id,
+      name: order.product.name,
+      price: order.product.price,
+      image: order.product.image
+    }
+  };
 
-      return ret;
+  if (request !== null)
+    ret.request = request;
+
+  return ret;
 }
 
 module.exports = Router;
