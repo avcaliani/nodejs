@@ -3,7 +3,7 @@
  * @contact   https://github.com/avcaliani
  * 
  * @Description
- * Product Controller.
+ * Product Routes.
  */
 const Express = require('express');
 const Router = Express.Router();
