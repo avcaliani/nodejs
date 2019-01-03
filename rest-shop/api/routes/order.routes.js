@@ -8,12 +8,13 @@
 const Express = require('express');
 const Router = Express.Router();
 const Mongoose = require('mongoose');
+const AuthHandler = require('../middlewares/auth.handler')
 const Response = require('../response');
 
 const Order = require('../models/order.model');
 const Product = require('../models/product.model');
 
-Router.get('/', (request, response, next) => {
+Router.get('/', AuthHandler, (request, response, next) => {
   Order.find()
     .select('_id product quantity') // Find only these fields
     .populate('product', '_id name price image')
@@ -31,7 +32,7 @@ Router.get('/', (request, response, next) => {
     .catch(err => Response.error(response, err, 500));
 });
 
-Router.get('/:id', (request, response, next) => {
+Router.get('/:id', AuthHandler, (request, response, next) => {
   Order.findById(request.params.id)
     .populate('product', '_id name price')
     .exec()
@@ -39,7 +40,7 @@ Router.get('/:id', (request, response, next) => {
     .catch(err => Response.error(response, err, 500));
 })
 
-Router.post('/', (request, response, next) => {
+Router.post('/', AuthHandler, (request, response, next) => {
   Product.findById(request.body.productId)
     .then(product => {
 
@@ -59,7 +60,7 @@ Router.post('/', (request, response, next) => {
     .catch(err => Response.error(response, 'Product doesn\'t exist', 500));
 });
 
-Router.delete('/:id', (request, response, next) => {
+Router.delete('/:id', AuthHandler, (request, response, next) => {
   Order.remove({ _id: request.params.id })
   .exec()
   .then(result => {

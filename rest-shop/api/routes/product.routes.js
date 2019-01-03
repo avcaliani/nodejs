@@ -8,7 +8,8 @@
 const Express = require('express');
 const Router = Express.Router();
 const Mongoose = require('mongoose');
-const File = require('../middlewares/file-upload.handler');
+const AuthHandler = require('../middlewares/auth.handler')
+const FileHandler = require('../middlewares/file-upload.handler');
 const Response = require('../response');
 
 const Product = require('../models/product.model');
@@ -37,7 +38,7 @@ Router.get('/:id', (request, response, next) => {
     .catch(err => Response.error(response, err, 500));
 })
 
-Router.post('/', File.upload.single('image'), (request, response, next) => {
+Router.post('/', AuthHandler, FileHandler.upload.single('image'), (request, response, next) => {
   
   if (typeof request.file === 'undefined')
     return Response.error(response, 'Invalid file')
@@ -54,7 +55,7 @@ Router.post('/', File.upload.single('image'), (request, response, next) => {
     .catch(err => Response.error(response, err));
 });
 
-Router.patch('/:id', (request, response, next) => {
+Router.patch('/:id', AuthHandler, (request, response, next) => {
 
   if (!Array.isArray(request.body))
     return Response.error(response, 'Invalid product body', 500);
@@ -73,7 +74,7 @@ Router.patch('/:id', (request, response, next) => {
     .catch(err => Response.error(response, err));
 });
 
-Router.delete('/:id', (request, response, next) => {
+Router.delete('/:id', AuthHandler, (request, response, next) => {
   Product.remove({ _id: request.params.id })
     .exec()
     .then(result => {
@@ -99,7 +100,7 @@ function parse(product, request = null) {
     id: product._id,
     name: product.name,
     price: product.price,
-    price: product.image
+    image: product.image
   };
 
   if (request !== null)
