@@ -10,6 +10,7 @@ const Router = Express.Router();
 const Mongoose = require('mongoose');
 const BCrypt = require('bcrypt');
 const Response = require('../response');
+const JWT = require('jsonwebtoken');
 
 const User = require('../models/user.model');
 
@@ -29,6 +30,26 @@ Router.post('/sign-up', (request, response, next) => {
       .then(result => Response.ok(response, parse(result), 201))
       .catch(err => Response.error(response, err));
   })
+});
+
+Router.post('/sign-in', (request, response, next) => {
+  User.findOne({ email: request.body.email })
+    .exec()
+    .then(user => {
+      
+      if (!user)
+        return Response.error(response, 'Auth failed', 401);
+
+      BCrypt.compare(request.body.password, user.password, (err, result) => {
+        
+        if (err || !result)
+          return Response.error(response, 'Auth failed', 401);
+        
+        const token = JWT.sign({ id: user._id, email: user.email }, process.env.JWT_KEY, { expiresIn: '1h' });
+        return Response.ok(response, { token: token });
+      });
+    })
+    .catch(err => Response.error(response, err));
 });
 
 /**
