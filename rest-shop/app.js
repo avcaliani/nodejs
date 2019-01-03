@@ -21,7 +21,8 @@ const UserRoutes = require('./api/routes/user.routes');
 
 // Database
 Mongoose.connect(process.env.MONGO_URL, {
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useCreateIndex: true
 });
 
 const App = Express();

@@ -14,21 +14,13 @@ const Response = require('../response');
 
 const Product = require('../models/product.model');
 
+const ProductController = require('../controllers/product.controller');
+
 Router.get('/', (request, response, next) => {
-  Product.find()
-    .select('_id name price image') // Find only these fields
-    .exec()
-    .then(documents => {
-      const path = `http://${request.headers.host}/products/`;
-      const data = {
-        count: documents.length,
-        products: documents.map(doc => {
-          return parse(doc, { type: 'GET', url: path + doc._id });
-        })
-      };
-      Response.ok(response, data);
-    })
-    .catch(err => Response.error(response, err, 500));
+  ProductController.findAll().then(
+    products => Response.ok(response, products),
+    err => Response.error(response, err)
+  );
 });
 
 Router.get('/:id', (request, response, next) => {
