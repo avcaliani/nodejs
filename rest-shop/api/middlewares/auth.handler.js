@@ -10,9 +10,13 @@ const Response = require('../response');
 
 module.exports = (request, response, next) => {
 
+    const token = request.headers.authorization;
+    if (token && !token.startsWith('Bearer '))
+        Response.error(response, 'Access denied', 401);
+
     try {
         request.user = JWT.verify(
-            request.headers.authorization,
+            token.replace('Bearer ', '').trim(),
             process.env.JWT_KEY
         );
         next();
