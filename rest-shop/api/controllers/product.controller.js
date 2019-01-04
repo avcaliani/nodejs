@@ -74,6 +74,7 @@ exports.save = (product) => {
 
 /**
  * Update product data.
+ * @param {*} id Product ID.
  * @param {*} product Product.
  * @return {Promise} true or Error.
  */
