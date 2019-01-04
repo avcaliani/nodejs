@@ -6,6 +6,8 @@
  * Product Controller.
  */
 const Mongoose = require('mongoose');
+const Error = require('./util/error.message');
+
 const Product = require('../models/product.model');
 
 /**
@@ -53,11 +55,11 @@ exports.save = (product) => {
   return new Promise((resolve, reject) => {
 
     if (!product)
-      return reject('A Product object is required.');
+      return reject(new Error('A Product Object is required.', 406));
     if (!product.name)
-      return reject('A Product Name is required.');
+      return reject(new Error('A Product Name is required.', 406));
     if (!product.price)
-      return reject('A Product Price is required.');
+      return reject(new Error('A Product Price is required.', 406));
 
     const prod = new Product({
       _id: new Mongoose.Types.ObjectId(),
@@ -81,8 +83,10 @@ exports.save = (product) => {
 exports.update = (id, product) => {
   return new Promise((resolve, reject) => {
 
-    if (!id) return reject('Product ID is required.');
-    if (!product) return reject('Product Object is required.');
+    if (!id)
+      return reject(new Error('Product ID is required.', 406));
+    if (!product)
+      return reject(new Error('Product Object is required.', 406));
     
     const prod = { };
     if (product.name) prod.name = product.name;
@@ -92,7 +96,7 @@ exports.update = (id, product) => {
     .exec()
     .then(result => {
       if (result.n > 0) resolve(true);
-      else reject('Product not found.');
+      else reject(new Error('Product not found.', 404));
     })
     .catch(reject);
   });
@@ -109,7 +113,7 @@ exports.remove = (id) => {
     .exec()
     .then(result => {
       if (result.n > 0) resolve(true);
-      else reject('Product not found');
+      else reject(new Error('Product not found.', 404));
     })
     .catch(err => Response.error(response, err));
   });

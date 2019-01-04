@@ -12,7 +12,7 @@ module.exports = (request, response, next) => {
 
     const token = request.headers.authorization;
     if (token && !token.startsWith('Bearer '))
-        Response.error(response, 'Access denied', 401);
+        Response.error(response, 'Access denied.', 401);
 
     try {
         request.user = JWT.verify(
@@ -21,6 +21,6 @@ module.exports = (request, response, next) => {
         );
         next();
     } catch (err) {
-        Response.error(response, 'Access denied', 401);
+        Response.error(response, 'Access denied.', 401);
     }
 };

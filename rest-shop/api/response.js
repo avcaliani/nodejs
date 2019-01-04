@@ -14,13 +14,13 @@ exports.ok = (response, data, code = 200) => {
    */
   response.status(data === null ? 404 : code).json({
     data: data,
-    message: data === null ? 'Data not found' : null
+    message: data === null ? 'Data not found.' : null
   });
 }
 
 exports.error = (response, err, code = 500) => {
   console.error('ERROR!', err);
-  response.status(code).json({
+  response.status(err.httpStatus || code).json({
     data: null,
     message: err.message || err
   });
