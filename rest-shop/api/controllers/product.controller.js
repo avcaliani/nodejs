@@ -6,7 +6,7 @@
  * Product Controller.
  */
 const Mongoose = require('mongoose');
-const Error = require('./util/error.class');
+const Error = require('./utils/error.class');
 
 const Product = require('../models/product.model');
 
