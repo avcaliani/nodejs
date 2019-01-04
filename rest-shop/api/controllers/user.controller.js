@@ -8,7 +8,7 @@
 const Mongoose = require('mongoose');
 const BCrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
-const Error = require('./util/error.message');
+const Error = require('./util/error.class');
 
 const User = require('../models/user.model');
 
