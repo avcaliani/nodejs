@@ -7,96 +7,38 @@
  */
 const Express = require('express');
 const Router = Express.Router();
-const Mongoose = require('mongoose');
-const AuthHandler = require('../middlewares/auth.handler')
 const Response = require('../response');
 
-const Order = require('../models/order.model');
-const Product = require('../models/product.model');
+const AuthHandler = require('../middlewares/auth.handler')
+
+const OrderController = require('../controllers/order.controller');
 
 Router.get('/', AuthHandler, (request, response, next) => {
-  Order.find()
-    .select('_id product quantity') // Find only these fields
-    .populate('product', '_id name price image')
-    .exec()
-    .then(documents => {
-      const path = `http://${request.headers.host}/orders/`;
-      const data = {
-        count: documents.length,
-        products: documents.map(doc => {
-          return parse(doc, { type: 'GET', url: path + doc._id });
-        })
-      };
-      Response.ok(response, data);
-    })
-    .catch(err => Response.error(response, err, 500));
+  OrderController.findAll().then(
+    products => Response.ok(response, products),
+    err => Response.error(response, err)
+  );
 });
 
 Router.get('/:id', AuthHandler, (request, response, next) => {
-  Order.findById(request.params.id)
-    .populate('product', '_id name price')
-    .exec()
-    .then(result => Response.ok(response, parse(result)))
-    .catch(err => Response.error(response, err, 500));
+  OrderController.find(request.params.id).then(
+    products => Response.ok(response, products),
+    err => Response.error(response, err)
+  );
 })
 
 Router.post('/', AuthHandler, (request, response, next) => {
-  Product.findById(request.body.productId)
-    .then(product => {
-
-      if (product === null)
-        return Response.error(response, 'Product not found', 404)
-
-      const order = new Order({
-        _id: Mongoose.Types.ObjectId(),
-        product: request.body.productId,
-        quantity: request.body.quantity
-      });
-      
-      order.save()
-      .then(result => Response.ok(response, parse(result), 201))
-      .catch(err => Response.error(response, err));
-    })
-    .catch(err => Response.error(response, 'Product doesn\'t exist', 500));
+  OrderController.save(request.body).then(
+    products => Response.ok(response, products),
+    err => Response.error(response, err)
+  );
 });
 
 Router.delete('/:id', AuthHandler, (request, response, next) => {
-  Order.remove({ _id: request.params.id })
-  .exec()
-  .then(result => {
-    if (result.n > 0)
-      return Response.ok(response, true);
-    Response.error(response, 'Order not found', 404);
-  })
-  .catch(err => Response.error(response, err));
+  OrderController.remove(request.params.id).then(
+    products => Response.ok(response, products),
+    err => Response.error(response, err)
+  );
 });
-
-/**
- * Clean up a order object, which was returned from database.
- * Request Object is optional and would have 'type' and 'url' fields.
- * @param {*} order Oder Object.
- * @param {*} request Request Object (Optional)
- */
-function parse(order, request = null) {
-
-  if (order === null || typeof order === 'undefined')
-    return null;
-
-  const ret = {
-    id: order._id,
-    quantity: order.quantity,
-    product: {
-      id: order.product._id,
-      name: order.product.name,
-      price: order.product.price,
-      image: order.product.image
-    }
-  };
-
-  if (request !== null)
-    ret.request = request;
-
-  return ret;
-}
 
 module.exports = Router;

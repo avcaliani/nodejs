@@ -115,7 +115,7 @@ exports.remove = (id) => {
       if (result.n > 0) resolve(true);
       else reject(new Error('Product not found.', 404));
     })
-    .catch(err => Response.error(response, err));
+    .catch(reject);
   });
 };
 
