@@ -1,14 +1,7 @@
-/**
- * @author    Anthony Vilarim Caliani
- * @contact   https://github.com/avcaliani
- * 
- * @Description
- * Product Controller.
- */
-const Mongoose = require('mongoose');
-const Error = require('./utils/error.class');
+const mongoose = require('mongoose');
+const Error = require('../../commons/error');
 
-const Product = require('../models/product.model');
+const Product = require('./product');
 
 /**
  * Find all Products.
@@ -62,7 +55,7 @@ exports.save = (product) => {
       return reject(new Error('A Product Price is required.', 406));
 
     const prod = new Product({
-      _id: new Mongoose.Types.ObjectId(),
+      _id: new mongoose.Types.ObjectId(),
       name: product.name,
       price: product.price,
       image: product.image || null

@@ -1,12 +1,5 @@
-/**
- * @author    Anthony Vilarim Caliani
- * @contact   https://github.com/avcaliani
- * 
- * @Description
- * Auth Handler.
- */
 const JWT = require('jsonwebtoken');
-const Response = require('../response');
+const Response = require('../commons/response');
 
 module.exports = (request, response, next) => {
 

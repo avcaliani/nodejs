@@ -1,15 +1,8 @@
-/**
- * @author    Anthony Vilarim Caliani
- * @contact   https://github.com/avcaliani
- * 
- * @Description
- * Order Controller.
- */
-const Mongoose = require('mongoose');
-const Error = require('./utils/error.class');
+const mongoose = require('mongoose');
+const Error = require('../../commons/error');
 
-const Order = require('../models/order.model');
-const Product = require('../models/product.model');
+const Order = require('./order');
+const Product = require('../product/product');
 
 /**
  * Find all Orders.
@@ -71,7 +64,7 @@ exports.save = (order) => {
         return reject(new Error('Product not found', 404));
 
       const _order = new Order({
-        _id: Mongoose.Types.ObjectId(),
+        _id: mongoose.Types.ObjectId(),
         product: order.productId,
         quantity: order.quantity
       });

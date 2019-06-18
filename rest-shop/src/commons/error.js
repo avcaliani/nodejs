@@ -1,10 +1,3 @@
-/**
- * @author    Anthony Vilarim Caliani
- * @contact   https://github.com/avcaliani
- * 
- * @Description
- * Common Error Model Class.
- */
 class Error {
 
   constructor(msg = null, httpStatus = null) {

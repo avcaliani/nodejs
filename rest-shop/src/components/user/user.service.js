@@ -1,16 +1,9 @@
-/**
- * @author    Anthony Vilarim Caliani
- * @contact   https://github.com/avcaliani
- * 
- * @Description
- * User Controller.
- */
-const Mongoose = require('mongoose');
-const BCrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
-const Error = require('./utils/error.class');
+const Error = require('../../commons/error');
 
-const User = require('../models/user.model');
+const User = require('./user');
 
 /**
  * Register a new User.
@@ -27,13 +20,13 @@ exports.register = (user) => {
     if (!user.password)
       return reject(new Error('User Password is required.', 406));
 
-    BCrypt.hash(user.password, 10, (err, hash) => {
+    bcrypt.hash(user.password, 10, (err, hash) => {
 
       if (err)
         return resolve(err);
   
       const usr = new User({
-        _id: new Mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         email: user.email,
         password: hash
       });
@@ -66,7 +59,7 @@ exports.authenticate = (login) => {
       if (!user)
         return reject(new Error('Auth failed.', 401));
 
-      BCrypt.compare(login.password, user.password, (err, result) => {
+      bcrypt.compare(login.password, user.password, (err, result) => {
         if (err || !result)
           return reject(new Error('Auth failed.', 401));
         

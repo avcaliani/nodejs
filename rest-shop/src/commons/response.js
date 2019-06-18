@@ -1,11 +1,3 @@
-/**
- * @author    Anthony Vilarim Caliani
- * @contact   https://github.com/avcaliani
- * 
- * @Description
- * Common Response Structure.
- */
-
 exports.ok = (response, data, code = 200) => {
   /**
    * You can even 'return' the response statement, but it is optional.
