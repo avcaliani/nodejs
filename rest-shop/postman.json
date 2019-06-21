@@ -5,407 +5,380 @@
 		"description": "Anthony's github projects collection.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
-	"item": [
-		{
-			"name": "Node.js",
-			"item": [
-				{
-					"name": "REST Shop",
-					"item": [
-						{
-							"name": "/users/sign-up",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"email\": \"avcaliani@github.com\",\n\t\"password\": \"iS2NodeJS\"\n}"
-								},
-								"url": {
-									"raw": "{{api.url}}/users/sign-up",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"users",
-										"sign-up"
-									]
-								}
-							},
-							"response": []
+	"item": [{
+		"name": "Node.js",
+		"item": [{
+			"name": "REST Shop",
+			"item": [{
+					"name": "/users/sign-up",
+					"request": {
+						"method": "POST",
+						"header": [{
+							"key": "Content-Type",
+							"name": "Content-Type",
+							"value": "application/json",
+							"type": "text"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"avcaliani@github.com\",\n\t\"password\": \"iS2NodeJS\"\n}"
 						},
-						{
-							"name": "/users/sign-in",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "cf62504c-128f-48f9-a930-efbc8e0bb696",
-										"exec": [
-											"// Test 00 - Should Pass\r",
-											"pm.test(\"Test if request status is ok.\", function () {\r",
-											"    \r",
-											"    pm.response.to.have.status(200);\r",
-											"    pm.response.to.not.be.error;\r",
-											"    \r",
-											"    const resp = pm.response.json();\r",
-											"    const token = resp.data.token;\r",
-											"    \r",
-											"    pm.environment.set(\"api.token\", `Bearer ${token}`);\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
+						"url": {
+							"raw": "{{api.url}}/users/sign-up",
+							"host": [
+								"{{api.url}}"
 							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"email\": \"avcaliani@github.com\",\n\t\"password\": \"iS2NodeJS\"\n}"
-								},
-								"url": {
-									"raw": "{{api.url}}/users/sign-in",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"users",
-										"sign-in"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/products",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{api.url}}/products/",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"products",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/products/:id",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{api.url}}/products/5c2c0cbaf2600109b061b334",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"products",
-										"5c2c0cbaf2600109b061b334"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/products",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"value": "application/json",
-										"type": "text",
-										"disabled": true
-									},
-									{
-										"key": "Authorization",
-										"value": "{{api.token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "name",
-											"value": "Xbox 19",
-											"type": "text"
-										},
-										{
-											"key": "price",
-											"value": "5000",
-											"type": "text"
-										},
-										{
-											"key": "image",
-											"type": "file",
-											"src": ""
-										}
-									]
-								},
-								"url": {
-									"raw": "{{api.url}}/products/",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"products",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/products/:id",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{api.token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "[\n\t{\n\t\t\"name\": \"name\",\n\t\t\"value\": \"Xbox Two\"\n\t},\n\t{\n\t\t\"name\": \"price\",\n\t\t\"value\": 5000\n\t},\n\t{\n\t\t\"name\": \"discount\",\n\t\t\"value\": 0.10\n\t}\n]"
-								},
-								"url": {
-									"raw": "{{api.url}}/products/5c299cf8371e301721b77b03",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"products",
-										"5c299cf8371e301721b77b03"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/products/:id",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{api.token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{api.url}}/products/5c299cf8371e301721b77b03",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"products",
-										"5c299cf8371e301721b77b03"
-									],
-									"query": [
-										{
-											"key": "",
-											"value": "",
-											"disabled": true
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/orders",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{api.token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{api.url}}/orders/",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"orders",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/orders/:id",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{api.token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{api.url}}/orders/5c32b82362b61c04d2a49051",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"orders",
-										"5c32b82362b61c04d2a49051"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/orders",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{api.token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\t\"productId\": \"5c2c0cbaf2600109b061b334\",\n    \"quantity\": 2\n}"
-								},
-								"url": {
-									"raw": "{{api.url}}/orders/",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"orders",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "/orders/:id",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{api.token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{api.url}}/orders/5c32b82362b61c04d2a49051",
-									"host": [
-										"{{api.url}}"
-									],
-									"path": [
-										"orders",
-										"5c32b82362b61c04d2a49051"
-									]
-								}
-							},
-							"response": []
+							"path": [
+								"users",
+								"sign-up"
+							]
 						}
-					],
-					"description": "You have to create an environment with these fields:\n{\n\t\"api.url\": \"localhost:3000\",\n\t\"api.token\": \"\"\n}\n\n* The 'api.token' field will be automatically filled when you execute sign-in request.",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "e8403e36-8423-4252-b05c-12ed21a487f8",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "fe904a16-19dc-4edf-a98a-9ac8c537e186",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/sign-in",
+					"event": [{
+						"listen": "test",
+						"script": {
+							"id": "cf62504c-128f-48f9-a930-efbc8e0bb696",
+							"exec": [
+								"// Test 00 - Should Pass\r",
+								"pm.test(\"Test if request status is ok.\", function () {\r",
+								"    \r",
+								"    pm.response.to.have.status(200);\r",
+								"    pm.response.to.not.be.error;\r",
+								"    \r",
+								"    const resp = pm.response.json();\r",
+								"    const token = resp.data.token;\r",
+								"    \r",
+								"    pm.environment.set(\"api.token\", `Bearer ${token}`);\r",
+								"});\r",
+								""
+							],
+							"type": "text/javascript"
 						}
-					],
-					"_postman_isSubFolder": true
+					}],
+					"request": {
+						"method": "POST",
+						"header": [{
+							"key": "Content-Type",
+							"name": "Content-Type",
+							"value": "application/json",
+							"type": "text"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"avcaliani@github.com\",\n\t\"password\": \"iS2NodeJS\"\n}"
+						},
+						"url": {
+							"raw": "{{api.url}}/users/sign-in",
+							"host": [
+								"{{api.url}}"
+							],
+							"path": [
+								"users",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api.url}}/products/",
+							"host": [
+								"{{api.url}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products/:id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api.url}}/products/5c2c0cbaf2600109b061b334",
+							"host": [
+								"{{api.url}}"
+							],
+							"path": [
+								"products",
+								"5c2c0cbaf2600109b061b334"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "{{api.token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [{
+									"key": "name",
+									"value": "Xbox 19",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "5000",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api.url}}/products/",
+							"host": [
+								"{{api.url}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products/:id",
+					"request": {
+						"method": "PATCH",
+						"header": [{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{api.token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n\t{\n\t\t\"name\": \"name\",\n\t\t\"value\": \"Xbox Two\"\n\t},\n\t{\n\t\t\"name\": \"price\",\n\t\t\"value\": 5000\n\t},\n\t{\n\t\t\"name\": \"discount\",\n\t\t\"value\": 0.10\n\t}\n]"
+						},
+						"url": {
+							"raw": "{{api.url}}/products/5c299cf8371e301721b77b03",
+							"host": [
+								"{{api.url}}"
+							],
+							"path": [
+								"products",
+								"5c299cf8371e301721b77b03"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/products/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [{
+							"key": "Authorization",
+							"value": "{{api.token}}",
+							"type": "text"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api.url}}/products/5c299cf8371e301721b77b03",
+							"host": [
+								"{{api.url}}"
+							],
+							"path": [
+								"products",
+								"5c299cf8371e301721b77b03"
+							],
+							"query": [{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "{{api.token}}",
+							"type": "text"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api.url}}/orders/",
+							"host": [
+								"{{api.url}}"
+							],
+							"path": [
+								"orders",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders/:id",
+					"request": {
+						"method": "GET",
+						"header": [{
+							"key": "Authorization",
+							"value": "{{api.token}}",
+							"type": "text"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api.url}}/orders/5c32b82362b61c04d2a49051",
+							"host": [
+								"{{api.url}}"
+							],
+							"path": [
+								"orders",
+								"5c32b82362b61c04d2a49051"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders",
+					"request": {
+						"method": "POST",
+						"header": [{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{api.token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"productId\": \"5c2c0cbaf2600109b061b334\",\n    \"quantity\": 2\n}"
+						},
+						"url": {
+							"raw": "{{api.url}}/orders/",
+							"host": [
+								"{{api.url}}"
+							],
+							"path": [
+								"orders",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [{
+							"key": "Authorization",
+							"value": "{{api.token}}",
+							"type": "text"
+						}],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api.url}}/orders/5c32b82362b61c04d2a49051",
+							"host": [
+								"{{api.url}}"
+							],
+							"path": [
+								"orders",
+								"5c32b82362b61c04d2a49051"
+							]
+						}
+					},
+					"response": []
 				}
-			]
-		}
-	],
-	"event": [
-		{
+			],
+			"description": "You have to create an environment with these fields:\n{\n\t\"api.url\": \"localhost:3000\",\n\t\"api.token\": \"\"\n}\n\n* The 'api.token' field will be automatically filled when you execute sign-in request.",
+			"event": [{
+					"listen": "prerequest",
+					"script": {
+						"id": "e8403e36-8423-4252-b05c-12ed21a487f8",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe904a16-19dc-4edf-a98a-9ac8c537e186",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"_postman_isSubFolder": true
+		}]
+	}],
+	"event": [{
 			"listen": "prerequest",
 			"script": {
 				"id": "8500bdee-817a-4dd1-bcfa-d2e1c4f413a3",
@@ -425,5 +398,5 @@
 				]
 			}
 		}
-	]	
+	]
 }

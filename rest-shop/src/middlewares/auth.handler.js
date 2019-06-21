@@ -1,7 +1,7 @@
 const JWT = require('jsonwebtoken');
 const Response = require('../commons/response');
 
-module.exports = (request, response, next) => {
+module.exports = function(request, response, next) {
 
     const token = request.headers.authorization;
     if (token && !token.startsWith('Bearer '))

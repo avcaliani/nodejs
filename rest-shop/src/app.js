@@ -2,9 +2,9 @@ require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
-const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const Error = require('./commons/error');
 
 const app = express();
 
@@ -16,9 +16,6 @@ mongoose.connect(process.env.MONGO_URL, {
 
 // CORS
 app.use(cors());
-
-// Log Handler
-app.use(morgan('dev'));
 
 // Static Content
 app.use('/uploads', express.static(
@@ -36,11 +33,14 @@ app.use('/orders', require('./components/order/order.routes'));
 app.use('/products', require('./components/product/product.routes'));
 app.use('/users', require('./components/user/user.routes'));
 
+// 404
+app.use((req, res, next) => next(new Error('Resource Not found', 404)));
+
 // Error Handler
 app.use(require('./middlewares/error.handler'));
 
 // Running
 app.listen(
   process.env.PORT,
-  _ => console.log(`Server running at '${process.env.PORT}' \\o/`)
+  _ => console.log(`Server is running at port '${process.env.PORT}' 🤘`)
 );

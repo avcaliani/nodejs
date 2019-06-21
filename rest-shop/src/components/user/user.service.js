@@ -10,32 +10,22 @@ const User = require('./user');
  * @param {*} user User.
  * @return {Promise} User or Error.
  */
-exports.register = (user) => {
-  return new Promise((resolve, reject) => {
+exports.register = async function (user) {
 
-    if (!user)
-        return reject(new Error('User Object is required.', 406));
-    if (!user.email)
-      return reject(new Error('User E-Mail is required.', 406));
-    if (!user.password)
-      return reject(new Error('User Password is required.', 406));
+  if (!user)
+    throw new Error('User Object is required.', 406);
+  if (!user.email)
+    throw new Error('User E-Mail is required.', 406);
+  if (!user.password)
+    throw new Error('User Password is required.', 406);
 
-    bcrypt.hash(user.password, 10, (err, hash) => {
-
-      if (err)
-        return resolve(err);
-  
-      const usr = new User({
-        _id: new mongoose.Types.ObjectId(),
-        email: user.email,
-        password: hash
-      });
-  
-      usr.save()
-        .then(usr => resolve(parse(usr)))
-        .catch(reject);
-    })
+  const _user = new User({
+    _id: new mongoose.Types.ObjectId(),
+    email: user.email,
+    password: await bcrypt.hash(user.password, 10)
   });
+
+  return parse(await _user.save());
 };
 
 /**
@@ -43,8 +33,7 @@ exports.register = (user) => {
  * @param {*} login Login Data.
  * @return {Promise} Token or Error.
  */
-exports.authenticate = (login) => {
-  return new Promise((resolve, reject) => {
+exports.authenticate = async function(login) {
 
     if (!login)
       return reject(new Error('User Object is required.', 406));
@@ -53,22 +42,20 @@ exports.authenticate = (login) => {
     if (!login.password)
       return reject(new Error('User Password is required.', 406));
 
-    User.findOne({ email: login.email })
-    .exec()
-    .then(user => {
-      if (!user)
-        return reject(new Error('Auth failed.', 401));
+    const user = await User.findOne({email: login.email}).exec();
+    if (!user)
+      throw new Error('Auth failed.', 401);
+    
+    const result = await bcrypt.compare(login.password, user.password);
+    if (!result)
+      throw new Error('Auth failed.', 401);
 
-      bcrypt.compare(login.password, user.password, (err, result) => {
-        if (err || !result)
-          return reject(new Error('Auth failed.', 401));
-        
-        const token = JWT.sign({ id: user._id, email: user.email }, process.env.JWT_KEY, { expiresIn: '1h' });
-        resolve({ token: token });
-      });
-    })
-    .catch(reject);
-  });
+    const token = JWT.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_KEY,
+      { expiresIn: process.env.JWT_TIMEOUT }
+    );
+    return { token };
 };
 
 /**
@@ -76,13 +63,8 @@ exports.authenticate = (login) => {
  * @param {*} product User Object.
  */
 function parse(user) {
-
-  if (user === null || typeof user === 'undefined')
-    return null;
-
+  if (!user) return null;
   return {
-    id: user._id,
-    email: user.email,
-    password: user.password
+    id: user._id, email: user.email, password: user.password
   };
 }
