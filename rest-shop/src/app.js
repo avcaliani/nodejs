@@ -1,14 +1,12 @@
+require('dotenv').config();
 const path = require('path');
-const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const app = express();
 
-// Environment Config
-dotenv.config();
+const app = express();
 
 // Database
 mongoose.connect(process.env.MONGO_URL, {
@@ -41,6 +39,7 @@ app.use('/users', require('./components/user/user.routes'));
 // Error Handler
 app.use(require('./middlewares/error.handler'));
 
+// Running
 app.listen(
   process.env.PORT,
   _ => console.log(`Server running at '${process.env.PORT}' \\o/`)
