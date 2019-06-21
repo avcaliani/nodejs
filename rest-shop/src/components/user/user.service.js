@@ -35,27 +35,27 @@ exports.register = async function (user) {
  */
 exports.authenticate = async function(login) {
 
-    if (!login)
-      return reject(new Error('User Object is required.', 406));
-    if (!login.email)
-      return reject(new Error('User E-Mail is required.', 406));
-    if (!login.password)
-      return reject(new Error('User Password is required.', 406));
+  if (!login)
+    return reject(new Error('User Object is required.', 406));
+  if (!login.email)
+    return reject(new Error('User E-Mail is required.', 406));
+  if (!login.password)
+    return reject(new Error('User Password is required.', 406));
+  
+  const user = await User.findOne({email: login.email}).exec();
+  if (!user)
+    throw new Error('Auth failed.', 401);
+  
+  const result = await bcrypt.compare(login.password, user.password);
+  if (!result)
+    throw new Error('Auth failed.', 401);
 
-    const user = await User.findOne({email: login.email}).exec();
-    if (!user)
-      throw new Error('Auth failed.', 401);
-    
-    const result = await bcrypt.compare(login.password, user.password);
-    if (!result)
-      throw new Error('Auth failed.', 401);
-
-    const token = JWT.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_KEY,
-      { expiresIn: process.env.JWT_TIMEOUT }
-    );
-    return { token };
+  const token = JWT.sign(
+    { id: user._id, email: user.email },
+    process.env.JWT_KEY,
+    { expiresIn: process.env.JWT_TIMEOUT }
+  );
+  return { token };
 };
 
 /**
