@@ -8,23 +8,17 @@ const Product = require('../product/product');
  * Find all Orders.
  * @return {Promise} List of Orders or Error.
  */
-exports.findAll = () => {
-  return new Promise((resolve, reject) => {
-    Order.find()
-    .select('_id product quantity') // Find only these fields
-    .populate('product', '_id name price image')
-    .exec()
-    .then(documents => {
-      const data = {
-        count: documents.length,
-        orders: documents.map(doc => {
-          return parse(doc, { type: 'GET', url: `/orders/${doc._id}` });
-        })
-      };
-      resolve(data);
+exports.findAll = async function() {
+  const products = await Order.find()
+                              .select('_id product quantity') // Find only these fields
+                              .populate('product', '_id name price image')
+                              .exec();
+  return {
+    count: products.length,
+    orders: products.map(product => {
+      return parse(product, { type: 'GET', url: `/orders/${product._id}` });
     })
-    .catch(reject);
-  });
+  };
 };
 
 /**
@@ -32,14 +26,11 @@ exports.findAll = () => {
  * @param {*} id Order ID.
  * @return {Promise} Order or Error.
  */
-exports.find = (id) => {
-  return new Promise((resolve, reject) => {
-    Order.findById(id)
-    .populate('product', '_id name price')
-    .exec()
-    .then(order => resolve(parse(order)))
-    .catch(reject);
-  });
+exports.find = async function(id) {
+  const order = await Order.findById(id)
+                          .populate('product', '_id name price')
+                          .exec();
+  return parse(order);
 };
 
 /**
@@ -47,34 +38,25 @@ exports.find = (id) => {
  * @param {*} order Order.
  * @return {Promise} Order or Error.
  */
-exports.save = (order) => {
-  return new Promise((resolve, reject) => {
+exports.save = async function(order) {
 
-    if (!order)
-      return reject(new Error('Order Object is required.'));
-    if (!order.productId)
-      return reject(new Error('Order Product ID is required.'));
-    if (!order.quantity)
-      return reject(new Error('Order Quantity is required.'));
+  if (!order)
+    return new Error('Order Object is required.');
+  if (!order.productId)
+    return new Error('Order Product ID is required.');
+  if (!order.quantity)
+    return new Error('Order Quantity is required.');
 
-    Product.findById(order.productId)
-    .then(product => {
+  const product = await Product.findById(order.productId);
+  if (product === null)
+    return new Error('Product not found', 404);
 
-      if (product === null)
-        return reject(new Error('Product not found', 404));
-
-      const _order = new Order({
-        _id: mongoose.Types.ObjectId(),
-        product: order.productId,
-        quantity: order.quantity
-      });
-      
-      _order.save()
-      .then(result => resolve(parse(result)))
-      .catch(reject);
-    })
-    .catch(reject);
-  });
+  const _order = new Order({
+    _id: mongoose.Types.ObjectId(),
+    product: order.productId,
+    quantity: order.quantity
+  });    
+  return parse(await _order.save());
 };
 
 /**
@@ -82,17 +64,11 @@ exports.save = (order) => {
  * @param {*} id Order ID.
  * @return {Promise} true or Error.
  */
-exports.remove = (id) => {
-  return new Promise((resolve, reject) => {
-    Order.remove({ _id: id })
-    .exec()
-    .then(result => {
-      if (result.n > 0)
-        return resolve(true);
-      reject(new Error('Order not found.', 404));
-    })
-    .catch(reject);
-  });
+exports.remove = async function(id) {
+  const result = await Order.deleteOne({ _id: id }).exec()
+  if (result.n <= 0)
+    throw new Error('Order not found.', 404);
+  return true;
 };
 
 /**
