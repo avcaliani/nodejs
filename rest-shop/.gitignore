@@ -80,5 +80,5 @@ package-lock.json
 .dynamodb/
 
 # Upload Folder
-upload/
-uploads/
+upload/*.jpg
+uploads/*.jpg

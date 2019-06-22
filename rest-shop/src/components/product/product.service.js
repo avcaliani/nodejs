@@ -1,28 +1,21 @@
 const mongoose = require('mongoose');
 const Error = require('../../commons/error');
-
 const Product = require('./product');
 
 /**
  * Find all Products.
  * @return {Promise} List of Products or Error.
  */
-exports.findAll = () => {
-  return new Promise((resolve, reject) => {
-    Product.find()
-      .select('_id name price image') // Find only these fields
-      .exec()
-      .then(documents => {
-        const data = {
-          count: documents.length,
-          products: documents.map(doc => {
-            return parse(doc, { type: 'GET', url: `/products/${doc._id}` });
-          })
-        };
-        resolve(data);
-      })
-      .catch(reject);
-  });
+exports.findAll = async function() {
+  const products = await Product.find()
+                                .select('_id name price image') // Find only these fields
+                                .exec();
+  return {
+    count: products.length,
+    products: products.map(product => {
+      return parse(product, { type: 'GET', url: `/products/${product._id}` });
+    })
+  };
 };
 
 /**
@@ -30,13 +23,8 @@ exports.findAll = () => {
  * @param {*} id Product ID.
  * @return {Promise} Product or Error.
  */
-exports.find = (id) => {
-  return new Promise((resolve, reject) => {
-    Product.findById(id)
-    .exec()
-    .then(result => resolve(parse(result)))
-    .catch(reject)
-  });
+exports.find = async function (id) {
+  return parse(await Product.findById(id).exec());  
 };
 
 /**
@@ -44,27 +32,23 @@ exports.find = (id) => {
  * @param {*} product Product.
  * @return {Promise} Product or Error.
  */
-exports.save = (product) => {
-  return new Promise((resolve, reject) => {
+exports.save = async function(product) {
 
-    if (!product)
-      return reject(new Error('A Product Object is required.', 406));
-    if (!product.name)
-      return reject(new Error('A Product Name is required.', 406));
-    if (!product.price)
-      return reject(new Error('A Product Price is required.', 406));
+  if (!product)
+    return new Error('A Product Object is required.', 406);
+  if (!product.name)
+    return new Error('A Product Name is required.', 406);
+  if (!product.price)
+    return new Error('A Product Price is required.', 406);
 
-    const prod = new Product({
-      _id: new mongoose.Types.ObjectId(),
-      name: product.name,
-      price: product.price,
-      image: product.image || null
-    });
-
-    prod.save()
-      .then(result => resolve(parse(result)))
-      .catch(reject);
+  const _product = new Product({
+    _id: new mongoose.Types.ObjectId(),
+    name: product.name,
+    price: product.price,
+    image: product.image || null
   });
+
+  return parse(await _product.save());
 };
 
 /**
@@ -73,26 +57,22 @@ exports.save = (product) => {
  * @param {*} product Product.
  * @return {Promise} true or Error.
  */
-exports.update = (id, product) => {
-  return new Promise((resolve, reject) => {
+exports.update = async function(id, product) {
 
-    if (!id)
-      return reject(new Error('Product ID is required.', 406));
-    if (!product)
-      return reject(new Error('Product Object is required.', 406));
-    
-    const prod = { };
-    if (product.name) prod.name = product.name;
-    if (product.price) prod.price = product.price;
+  if (!id)
+    return new Error('Product ID is required.', 406);
+  if (!product)
+    return new Error('Product Object is required.', 406);
 
-    Product.update({ _id: id }, { $set: prod })
-    .exec()
-    .then(result => {
-      if (result.n > 0) resolve(true);
-      else reject(new Error('Product not found.', 404));
-    })
-    .catch(reject);
-  });
+  const prod = { };
+  if (product.name) prod.name = product.name;
+  if (product.price) prod.price = product.price;
+
+  const result = await Product.updateOne({ _id: id }, { $set: prod }).exec();
+  if (result.n <= 0)
+    throw new Error('Product not found.', 404);
+
+  return true;
 };
 
 /**
@@ -100,16 +80,11 @@ exports.update = (id, product) => {
  * @param {*} id Product ID.
  * @return {Promise} true or Error.
  */
-exports.remove = (id) => {
-  return new Promise((resolve, reject) => {
-    Product.remove({ _id: id })
-    .exec()
-    .then(result => {
-      if (result.n > 0) resolve(true);
-      else reject(new Error('Product not found.', 404));
-    })
-    .catch(reject);
-  });
+exports.remove = async function(id) {
+  const result = Product.deleteOne({ _id: id }).exec();
+  if (result.n <= 0)
+    throw new Error('Product not found.', 404);
+  return true;
 };
 
 /**
