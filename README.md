@@ -8,7 +8,7 @@ This is my Node JS repository \o/
 
 ## Projects
 
-- 🛍 **[rest-shop](rest-shop/README.md)** My first Node JS RESTful API
+- 🛍 **[rest-shop](rest-shop/README.md)**: My first Node JS RESTful API
 
 ---
 
