@@ -9,7 +9,3 @@ This is my Node JS repository \o/
 ## Projects
 
 - 🛍 **[rest-shop](rest-shop/README.md)**: My first Node JS RESTful API
-
----
-
-_You can find [@avcaliani](#) at [GitHub](https://github.com/avcaliani) or [GitLab](https://gitlab.com/avcaliani)._
