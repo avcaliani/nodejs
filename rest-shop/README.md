@@ -12,7 +12,3 @@ My first Node JS RESTful API. Here you will find my experiments using Node JS + 
 yarn start  # Start App
 yarn dev    # Start App (Development Mode)
 ```
-
----
-
-_You can find [@avcaliani](#) at [GitHub](https://github.com/avcaliani) or [GitLab](https://gitlab.com/avcaliani)._
