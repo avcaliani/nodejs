@@ -3,7 +3,6 @@ By Anthony Vilarim Caliani
 
 [![#](https://img.shields.io/badge/licence-MIT-blue.svg)](#) [![#](https://img.shields.io/badge/node-LTS-green.svg)](#)
 
-## Description
 This is my Node JS repository \o/
 
 ## Projects
