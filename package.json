@@ -1,5 +1,5 @@
 {
-  "name": "rest-shop",
+  "name": "node-shop",
   "version": "2.0.0",
   "description": "A Node.js RESTful API.",
   "main": "src/app.js",

@@ -1,10 +1,13 @@
-# 🦉 Node JS
+# 🦉 Node Shop
 By Anthony Vilarim Caliani
 
 [![#](https://img.shields.io/badge/licence-MIT-blue.svg)](#) [![#](https://img.shields.io/badge/node-LTS-green.svg)](#)
 
-This is my Node JS repository \o/
+My first Node JS RESTful API. Here you will find my experiments using Node JS + Express!
 
-## Projects
+## Quick Start
 
-- 🛍 **[rest-shop](rest-shop/README.md)**: My first Node JS RESTful API
+```sh
+yarn start  # Start App
+yarn dev    # Start App (Development Mode)
+```
